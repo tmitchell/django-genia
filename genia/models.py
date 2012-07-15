@@ -1,4 +1,14 @@
 from django.db import models
+from utils import get_app_name_for_model
+
+
+class GenerationManager(models.Manager):
+    def get_query_set(self):
+        qset = super(GenerationManager, self).get_query_set()
+        if qset.exists():
+            app_name = get_app_name_for_model(self.model)
+            qset = qset.filter(generation=Generation.objects.get(app_name=app_name, current=True))
+        return qset
 
 
 class Generation(models.Model):

@@ -1,13 +1,17 @@
 from django.test import TestCase
 from django.db import models
 
-from genia.models import Generation
+from genia.models import Generation, GenerationManager
 
 
 # these are models that will use genia
 class Person(models.Model):
     name = models.CharField(max_length=100)
     generation = models.ForeignKey(Generation)
+    objects = GenerationManager()
+
+    def __unicode__(self):
+        return self.name
 
 
 class GenerationTest(TestCase):
@@ -34,3 +38,15 @@ class GenerationTest(TestCase):
         g1 = Generation.objects.get(pk=g1.pk)   # refresh from DB
         self.assertTrue(g2.current)
         self.assertFalse(g1.current)
+
+
+class GenerationManagerTest(TestCase):
+    def setUp(self):
+        self.g1 = Generation.objects.create(app_name='genia')
+        self.g2 = Generation.objects.create(app_name='genia')
+        self.g2.make_current()
+
+    def test_get_query_set(self):
+        p1 = Person.objects.create(name='Joe', generation=self.g1)
+        p2 = Person.objects.create(name='Bob', generation=self.g2)
+        self.assertQuerysetEqual(Person.objects.all(), ['<Person: Bob>'])
