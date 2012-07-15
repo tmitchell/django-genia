@@ -1,7 +1,7 @@
 from django.test import TestCase
 from django.db import models
 
-from genia.models import Generation, GenerationManager, GenerationalModelMixin
+from genia.models import Generation, GenerationalModelManager, GenerationalModelMixin
 
 
 # these are models that will use genia
