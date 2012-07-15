@@ -20,3 +20,17 @@ class GenerationTest(TestCase):
         self.assertEquals(g2.index, 2)
         self.assertEquals(g3.index, 1)
 
+    def test_make_current(self):
+        g1 = Generation.objects.create(app_name='test')
+        g1.make_current()
+        self.assertTrue(g1.current)
+
+    def test_make_current_second(self):
+        g1 = Generation.objects.create(app_name='test')
+        g1.make_current()
+        assert g1.current   # precondition, already tested above
+        g2 = Generation.objects.create(app_name='test')
+        g2.make_current()
+        g1 = Generation.objects.get(pk=g1.pk)   # refresh from DB
+        self.assertTrue(g2.current)
+        self.assertFalse(g1.current)
