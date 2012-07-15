@@ -41,6 +41,9 @@ class Generation(models.Model):
         self.current = True
         self.save()
 
+    def __unicode__(self):
+        return u"%s #%d" % (self.app_name, self.index)
+
 
 class GenerationalModelMixin(models.Model):
     generation = models.ForeignKey(Generation)
