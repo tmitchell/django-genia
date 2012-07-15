@@ -19,3 +19,5 @@ class Generation(models.Model):
                     self.index = generations[0].index + 1
                 else:
                     self.index = 1
+
+        super(Generation, self).save(*args, **kwargs)
