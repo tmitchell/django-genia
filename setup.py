@@ -1,12 +1,15 @@
 import os
 from setuptools import setup
 
+import genia
+
+
 def read(fname):
     return open(os.path.join(os.path.dirname(__file__), fname)).read()
 
 setup(
     name = "django-genia",
-    version = "0.1dev",
+    version = genia.__version__,
     author = "Taylor Mitchell",
     author_email = "taylor.mitchell@gmail.com",
     description = ("A pluggable Django app for managing generations of data"),
