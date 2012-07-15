@@ -3,8 +3,8 @@ from utils import get_app_name_for_model
 
 
 class GenerationManager(models.Manager):
-    def current(self, app_name):
-        return self.get(current=True, app_name=app_name)
+    def active(self, app_name):
+        return self.get(active=True, app_name=app_name)
 
 
 class Generation(models.Model):
@@ -12,7 +12,7 @@ class Generation(models.Model):
     index = models.IntegerField()
     created = models.DateTimeField(auto_now_add=True)
     last_updated = models.DateTimeField(null=True)
-    current = models.BooleanField()
+    active = models.BooleanField()
     objects = GenerationManager()
     class Meta:
         unique_together = ('app_name', 'index')
@@ -29,13 +29,13 @@ class Generation(models.Model):
                     self.index = 1
         super(Generation, self).save(*args, **kwargs)
 
-    def make_current(self):
-        if self.current:
+    def make_active(self):
+        if self.active:
             return
-        current_qset = Generation.objects.filter(app_name=self.app_name).filter(current=True)
-        if current_qset.exists():
-            current_qset.update(current=False)
-        self.current = True
+        active_qs = Generation.objects.filter(app_name=self.app_name).filter(active=True)
+        if active_qs.exists():
+            active_qs.update(active=False)
+        self.active = True
         self.save()
 
     def __unicode__(self):
@@ -47,7 +47,7 @@ class GenerationalModelManager(models.Manager):
         qset = super(GenerationalModelManager, self).get_query_set()
         if qset.exists():
             app_name = get_app_name_for_model(self.model)
-            qset = qset.filter(generation=Generation.objects.get(app_name=app_name, current=True))
+            qset = qset.filter(generation=Generation.objects.get(app_name=app_name, active=True))
         return qset
 
 
@@ -58,5 +58,5 @@ class GenerationalModelMixin(models.Model):
         abstract = True
 
     @classmethod
-    def current_generation(cls):
-        return Generation.objects.current(app_name=get_app_name_for_model(cls))
+    def active_generation(cls):
+        return Generation.objects.active(app_name=get_app_name_for_model(cls))
