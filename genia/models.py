@@ -2,12 +2,18 @@ from django.db import models
 from utils import get_app_name_for_model
 
 
+class GenerationManager(models.Manager):
+    def current(self, app_name):
+        return self.get(current=True, app_name=app_name)
+
+
 class Generation(models.Model):
     app_name = models.CharField(max_length=255)
     index = models.IntegerField()
     created = models.DateTimeField(auto_now_add=True)
     last_updated = models.DateTimeField(null=True)
     current = models.BooleanField()
+    objects = GenerationManager()
     class Meta:
         unique_together = ('app_name', 'index')
 
