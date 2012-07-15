@@ -16,7 +16,8 @@ setup(
     license = "BSD",
     keywords = "django data generations",
     url = "https://github.com/tmitchell/django-genia",
-    packages=['genia',],
+    packages=('genia',),
+    install_requires=('Django>=1.2'),
     long_description=read('README.rst'),
     classifiers=[
         'Development Status :: 3 - Alpha',
