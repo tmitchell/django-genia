@@ -214,3 +214,10 @@ man_pages = [
     ('index', 'django-genia', u'django-genia Documentation',
      [u'Taylor Mitchell'], 1)
 ]
+
+
+# -- Django setup for autodoc
+
+from django.conf import settings
+settings.configure(DEBUG=True, TEMPLATE_DEBUG=True, DATABASES={"default": { "NAME": ":memory:",
+                                                                            "ENGINE": "django.db.backends.sqlite3", }})
