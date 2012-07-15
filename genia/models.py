@@ -9,3 +9,13 @@ class Generation(models.Model):
     current = models.BooleanField()
     class Meta:
         unique_together = ('app_name', 'index')
+
+    def save(self, *args, **kwargs):
+        if self.pk is None:
+            # newly created model, set the generation index automatically
+            if self.index is None:
+                generations = Generation.objects.filter(app_name=self.app_name).order_by('-index')
+                if generations.exists():
+                    self.index = generations[0].index + 1
+                else:
+                    self.index = 1

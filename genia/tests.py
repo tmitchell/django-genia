@@ -1,16 +1,18 @@
-"""
-This file demonstrates writing tests using the unittest module. These will pass
-when you run "manage.py test".
-
-Replace this with more appropriate tests for your application.
-"""
-
 from django.test import TestCase
+from django.db import models
+
+from genia.models import Generation
 
 
-class SimpleTest(TestCase):
-    def test_basic_addition(self):
-        """
-        Tests that 1 + 1 always equals 2.
-        """
-        self.assertEqual(1 + 1, 2)
+# these are models that will use genia
+class Person(models.Model):
+    name = models.CharField(max_length=100)
+    generation = models.ForeignKey(Generation)
+
+
+class GenerationTest(TestCase):
+    def test_auto_index(self):
+        g1 = Generation.objects.create(app_name='test')
+        g2 = Generation.objects.create(app_name='test')
+        self.assertEquals(g1.index, 1)
+        self.assertEquals(g2.index, 2)
