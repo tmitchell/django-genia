@@ -36,9 +36,9 @@ class GenerationTest(TestCase):
         g1 = Generation.objects.get(pk=g1.pk)   # refresh from DB
         self.assertTrue(g2.current)
         self.assertFalse(g1.current)
+        
 
-
-class GenerationManagerTest(TestCase):
+class GenerationalModelManagerTest(TestCase):
     def setUp(self):
         self.g1 = Generation.objects.create(app_name='genia')
         self.g2 = Generation.objects.create(app_name='genia')
