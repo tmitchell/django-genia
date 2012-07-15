@@ -12,7 +12,11 @@ class Person(models.Model):
 
 class GenerationTest(TestCase):
     def test_auto_index(self):
+        """Check that each subsequent generation within an app created gets a new index"""
         g1 = Generation.objects.create(app_name='test')
         g2 = Generation.objects.create(app_name='test')
+        g3 = Generation.objects.create(app_name='test2')
         self.assertEquals(g1.index, 1)
         self.assertEquals(g2.index, 2)
+        self.assertEquals(g3.index, 1)
+
