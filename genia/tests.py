@@ -1,14 +1,12 @@
 from django.test import TestCase
 from django.db import models
 
-from genia.models import Generation, GenerationManager
+from genia.models import Generation, GenerationManager, GenerationalModelMixin
 
 
 # these are models that will use genia
-class Person(models.Model):
+class Person(GenerationalModelMixin, models.Model):
     name = models.CharField(max_length=100)
-    generation = models.ForeignKey(Generation)
-    objects = GenerationManager()
 
     def __unicode__(self):
         return self.name

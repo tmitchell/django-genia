@@ -40,3 +40,10 @@ class Generation(models.Model):
             current_qset.update(current=False)
         self.current = True
         self.save()
+
+
+class GenerationalModelMixin(models.Model):
+    generation = models.ForeignKey(Generation)
+    objects = GenerationManager()
+    class Meta:
+        abstract = True
