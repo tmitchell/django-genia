@@ -33,7 +33,11 @@ def process_docstring(app, what, name, obj, options, lines):
                 lines.append(u':param %s: %s' % (field.attname, verbose_name))
 
             # Add the field's type to the docstring
-            lines.append(u':type %s: %s' % (field.attname, type(field).__name__))
+            if isinstance(field, models.ForeignKey):
+                to = field.rel.to
+                lines.append(u':type %s: %s to :class:`~%s.%s`' % (field.attname, type(field).__name__, to.__module__, to.__name__))
+            else:
+                lines.append(u':type %s: %s' % (field.attname, type(field).__name__))
 
     # Return the extended docstring
     return lines
