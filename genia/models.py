@@ -56,3 +56,7 @@ class GenerationalModelMixin(models.Model):
     objects = GenerationalModelManager()
     class Meta:
         abstract = True
+
+    @classmethod
+    def current_generation(cls):
+        return Generation.objects.current(app_name=get_app_name_for_model(cls))

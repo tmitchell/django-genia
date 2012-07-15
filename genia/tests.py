@@ -1,7 +1,7 @@
 from django.test import TestCase
 from django.db import models
 
-from genia.models import Generation, GenerationalModelManager, GenerationalModelMixin
+from genia.models import Generation, GenerationalModelMixin
 
 
 # these are models that will use genia
@@ -45,7 +45,7 @@ class GenerationTest(TestCase):
         self.assertEqual(Generation.objects.current(app_name='test').pk, g2.pk)
 
 
-class GenerationalModelManagerTest(TestCase):
+class GenerationalModelTest(TestCase):
     def setUp(self):
         self.g1 = Generation.objects.create(app_name='genia')
         self.g2 = Generation.objects.create(app_name='genia')
@@ -55,3 +55,7 @@ class GenerationalModelManagerTest(TestCase):
         p1 = Person.objects.create(name='Joe', generation=self.g1)
         p2 = Person.objects.create(name='Bob', generation=self.g2)
         self.assertQuerysetEqual(Person.objects.all(), ['<Person: Bob>'])
+
+    def test_current_generation(self):
+        p1 = Person.objects.create(name='Joe', generation=self.g1)
+        self.assertEqual(Person.current_generation().pk, self.g2.pk)
