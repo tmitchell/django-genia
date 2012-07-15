@@ -3,7 +3,16 @@ from utils import get_app_name_for_model
 
 
 class GenerationManager(models.Manager):
+    """Manager for generation objects"""
+
     def active(self, app_name):
+        """Get the one active generation for the given app
+
+            :param app_name: Name of the app
+            :type app_name: String
+            :return: Active generation
+            :rtype: Generation object
+        """
         return self.get(active=True, app_name=app_name)
 
 
