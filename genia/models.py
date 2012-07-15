@@ -2,15 +2,6 @@ from django.db import models
 from utils import get_app_name_for_model
 
 
-class GenerationalModelManager(models.Manager):
-    def get_query_set(self):
-        qset = super(GenerationalModelManager, self).get_query_set()
-        if qset.exists():
-            app_name = get_app_name_for_model(self.model)
-            qset = qset.filter(generation=Generation.objects.get(app_name=app_name, current=True))
-        return qset
-
-
 class Generation(models.Model):
     app_name = models.CharField(max_length=255)
     index = models.IntegerField()
@@ -43,6 +34,15 @@ class Generation(models.Model):
 
     def __unicode__(self):
         return u"%s #%d" % (self.app_name, self.index)
+
+
+class GenerationalModelManager(models.Manager):
+    def get_query_set(self):
+        qset = super(GenerationalModelManager, self).get_query_set()
+        if qset.exists():
+            app_name = get_app_name_for_model(self.model)
+            qset = qset.filter(generation=Generation.objects.get(app_name=app_name, current=True))
+        return qset
 
 
 class GenerationalModelMixin(models.Model):
