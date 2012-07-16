@@ -1,7 +1,4 @@
-"""genia/admin.py
-
-Hooks django-genia models into the Django admin
-"""
+"""Hooks django-genia models into the Django admin"""
 
 from django.contrib import admin
 

@@ -1,6 +1,6 @@
-"""genia/models.py
+"""Django models, managers and mixins
 
-Django models, managers and mixins for supporting generational data
+For supporting generational data with django-genia
 """
 
 from django.db import models

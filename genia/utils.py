@@ -1,7 +1,4 @@
-"""genia/utils.py
-
-Helper functions and other misc code that is shared
-"""
+"""Helper functions and other misc code that is shared within django-genia"""
 
 def get_app_name_for_model(model):
     """Extract the app name from a model class

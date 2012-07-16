@@ -1,7 +1,4 @@
-"""genia/models.py
-
-Test cases for django-genia
-"""
+"""Test cases for django-genia"""
 
 from django.test import TestCase
 from django.db import models
