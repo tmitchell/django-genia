@@ -1,3 +1,8 @@
+"""genia/admin.py
+
+Hooks django-genia models into the Django admin
+"""
+
 from django.contrib import admin
 
 from genia.models import Generation
