@@ -74,17 +74,26 @@ class GenerationalModelTest(TestCase):
     def setUp(self):
         self.gen1 = Generation.objects.create(app_name='genia')
         self.gen2 = Generation.objects.create(app_name='genia')
-        self.gen2.make_active()
 
     def test_get_query_set(self):
         """Test default manager
 
-        objects should return only the data in the active generation
+        queries should return only the data in the active generation
         """
+        self.gen2.make_active()
         Person.objects.create(name='Joe', generation=self.gen1)
         Person.objects.create(name='Bob', generation=self.gen2)
         self.assertQuerysetEqual(Person.objects.all(), ['<Person: Bob>'])
 
+    def test_get_query_set_no_active(self):
+        """Test default manager
+
+        queries should fail when there is no active generation
+        """
+        Person.objects.create(name='Joe', generation=self.gen1)
+        self.assertRaises(Generation.DoesNotExist, Person.objects.all)
+
     def test_active_generation(self):
         """Test generational data class method active_generation"""
+        self.gen2.make_active()
         self.assertEqual(Person.active_generation().pk, self.gen2.pk)
