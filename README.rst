@@ -45,11 +45,7 @@ Install django-genia::
 Setup
 -----
 
-The easiest way to get started is to edit your Django app's ``models.py`` to use
-:py:class:`genia.models.GenerationalModelMixin`:
-
-.. code-block:: python
-    :emphasize-lines: 2,4
+The easiest way to get started is to edit your Django app's ``models.py`` to use ``GenerationalModelMixin``:
 
     from django.db import models
     from genia.models import GenerationalModelMixin
@@ -61,13 +57,10 @@ The easiest way to get started is to edit your Django app's ``models.py`` to use
             return self.name
 
 This mixin will add a ``generation`` field to your model which is a ``ForeignKey`` to a
-:py:class:`genia.models.Generation`.  It also overrides your model's default manager to use
-:py:class:`genia.models.GenerationalModelManager`.
+``genia.models.Generation``.  It also overrides your model's default manager to use
+``genia.models.GenerationalModelManager``.
 
 If you need to customize this (e.g. your model already has its own custom manager), you can use the following template:
-
-.. code-block:: python
-    :emphasize-lines: 2,6,8
 
     from django.db import models
     from genia.models import Generation, GenerationalModelManager
