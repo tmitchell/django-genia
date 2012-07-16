@@ -50,7 +50,7 @@ copyright = u'2012, Taylor Mitchell'
 #
 # The short X.Y version.
 import genia
-version = '.'.join(str(v) for v in genia.version[0])
+version = '.'.join(str(v) for v in genia.VERSION[0])
 # The full version, including alpha/beta/rc tags.
 release = genia.__version__
 
