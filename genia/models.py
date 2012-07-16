@@ -4,6 +4,7 @@ For supporting generational data with django-genia
 """
 
 from django.db import models
+from django.utils.timezone import now
 
 from genia.utils import get_app_name_for_model
 
@@ -61,6 +62,10 @@ class Generation(models.Model):
         if active_qs.exists():
             active_qs.update(active=False)
         self.active = True
+        self.save()
+
+    def ping(self):
+        self.last_updated = now()
         self.save()
 
     def __unicode__(self):

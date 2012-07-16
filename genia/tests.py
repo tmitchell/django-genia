@@ -60,6 +60,14 @@ class GenerationTest(TestCase):
         gen2.make_active()
         self.assertEqual(Generation.objects.active(app_name='test').pk, gen2.pk)
 
+    def test_ping(self):
+        """Check that ping updates the update timestamp"""
+        gen1 = Generation.objects.create(app_name='test')
+        assert gen1.last_updated is None
+        gen1.ping()
+        gen1 = Generation.objects.get(pk=gen1.pk)
+        self.assertIsNotNone(gen1.last_updated)
+
 
 class GenerationalModelTest(TestCase):
     """Tests related to generational data models"""
