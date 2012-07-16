@@ -1,5 +1,11 @@
+"""genia/models.py
+
+Django models, managers and mixins for supporting generational data
+"""
+
 from django.db import models
-from utils import get_app_name_for_model
+
+from genia.utils import get_app_name_for_model
 
 
 class GenerationManager(models.Manager):
@@ -20,9 +26,10 @@ class Generation(models.Model):
     app_name = models.CharField(max_length=255)
     index = models.IntegerField(help_text='Generation number for this app')
     created = models.DateTimeField(auto_now_add=True)
-    last_updated = models.DateTimeField(null=True, help_text='Timestamp of the last time the data was changed.  Manually set.')
+    last_updated = models.DateTimeField(null=True,
+        help_text='Timestamp of the last time the data was changed.  Manually set.')
     active = models.BooleanField(help_text='Is this the active generation for the given app? '
-                                           'Note that only one generation can be active at a time')
+       'Note that only one generation can be active at a time')
     objects = GenerationManager()
     class Meta:
         unique_together = ('app_name', 'index')
@@ -50,7 +57,7 @@ class Generation(models.Model):
         """
         if self.active:
             return
-        active_qs = Generation.objects.filter(app_name=self.app_name).filter(active=True)
+        active_qs = Generation.objects.filter(app_name=self.app_name, active=True)
         if active_qs.exists():
             active_qs.update(active=False)
         self.active = True
@@ -70,8 +77,7 @@ class GenerationalModelManager(models.Manager):
         """
         qset = super(GenerationalModelManager, self).get_query_set()
         if qset.exists():
-            app_name = get_app_name_for_model(self.model)
-            qset = qset.filter(generation=Generation.objects.get(app_name=app_name, active=True))
+            qset = qset.filter(generation=self.model.active_generation())
         return qset
 
 
